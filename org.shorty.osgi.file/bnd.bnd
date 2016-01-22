@@ -1,0 +1,19 @@
+# Example Project Template
+# Make sure to edit the name, category and help document.
+
+-resourceonly: true
+-includeresource: META-INF/services/java.nio.file.spi.FileSystemProvider=services/java.nio.file.spi.FileSystemProvider
+
+
+# Include-Resource: META-INF/services/java.nio.file.spi.FileSystemProvider=services/java.nio.file.spi.FileSystemProvider
+
+# ActivationPolicy for FileSystemProvider implementations must not be lazy
+# Bundle-ActivationPolicy: lazy
+# We either need to set this bundle as Fragment-Bundle of the System-Framework-Bundle
+# or we need to set it on the system classpath (bnd: '-runpath') at the bnd run configuration
+Fragment-Host: system.bundle; extension:="framework"
+
+bin: target/classes
+src: src/main/java
+
+Private-Package: org.shorty.osgi.file.internal

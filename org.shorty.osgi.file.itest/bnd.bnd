@@ -1,0 +1,54 @@
+# This is the version of JUnit that will be used at build time and run time
+junit: org.apache.servicemix.bundles.junit;version="[4.11,5)"
+
+# This is the version of Mockito that will be used at build time and run time
+mockito: org.mockito.mockito-core;version="[1.9,2)",\
+  org.objenesis;version="[2.1,3)"
+
+# Discover and run all test cases annotated with the @RunWith annotation
+Test-Cases: ${classes;CONCRETE;ANNOTATED;org.junit.runner.RunWith}
+
+# Build dependencies
+-buildpath: \
+	osgi.core;version='[4.2,5)',\
+	osgi.cmpn,\
+	${junit},\
+	biz.aQute.bnd.annotation;version=2.3,\
+	slf4j.api
+# -outputmask: ${@bsn}-${version;===S;${@version}}.jar
+-runee: JavaSE-1.7
+# -runpath: junit.osgi;export="junit.framework;version=4.1"
+-buildpath: \
+	${junit},\
+	${mockito},\
+	osgi.core; version=6.0,\
+	osgi.cmpn; version=6.0
+
+# We need JUnit and Mockito to resolve the test cases at runtime.
+# Other runtime dependencies should be added as necessary
+-runbundles: \
+	org.apache.servicemix.bundles.junit;version='[4.11.0,4.11.1)',\
+	org.mockito.mockito-core;version='[1.10.19,1.10.20)',\
+	org.objenesis;version='[2.2.0,2.2.1)',\
+	org.shorty.osgi.file;version=snapshot,\
+	org.shorty.osgi.file.itest;version=snapshot
+
+Bundle-Version: 0.0.0.${tstamp}
+
+# Needed for Mockito's mocking to work
+-runsystempackages.objenesis: sun.misc,sun.reflect
+
+# Use Felix by default
+#-runfw: org.eclipse.osgi;version='[3.10.1.v20140909-1633,3.10.1.v20140909-1633]'
+-runfw: org.eclipse.osgi;version='[3.10.1.v20140909-1633,3.10.1.v20140909-1633]'
+-runvm: -ea
+
+bin: target/classes
+src: src/main/java
+srctest: src/main/java
+
+Private-Package: org.shorty.osgi.file.internal
+-runrequires: \
+	osgi.identity;filter:='(osgi.identity=org.shorty.osgi.file)',\
+	osgi.identity;filter:='(osgi.identity=org.shorty.osgi.file.itest)'
+-runee: JavaSE-1.7
